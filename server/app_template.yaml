@@ -1,0 +1,64 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: water-tracker-svc
+  labels:
+    app: water-tracker-svc
+spec:
+  type: LoadBalancer
+  selector:
+    app: water-tracker-svc
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: water-tracker-svc
+  labels:
+    app: water-tracker-svc
+    version: v1
+  annotations:
+    deployment.kubernetes.io/revision: '1'
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: water-tracker-svc
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: water-tracker-svc
+        version: v1
+    spec:
+      containers:
+        - name: water-tracker-svc
+          image: water-tracker-svc:latest
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+          env:
+            - name: ORACLEDB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: water-tracker-svc-secrets
+                  key: dbUser
+            - name: ORACLEDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: water-tracker-svc-secrets
+                  key: dbPassword
+            - name: ORACLEDB_CONNECTIONSTRING
+              valueFrom:
+                secretKeyRef:
+                  name: water-tracker-svc-secrets
+                  key: connectString
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      imagePullSecrets:
+        - name: regcred

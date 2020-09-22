@@ -1,0 +1,6 @@
+server/build-resource/*
+!server/build-resource/README.md
+!server/build-resource/secret_template.yaml
+server/node_modules/
+variables.h
+app.yaml
