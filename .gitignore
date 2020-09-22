@@ -4,3 +4,4 @@ server/build-resource/*
 server/node_modules/
 variables.h
 app.yaml
+.DS_Store
