@@ -35,7 +35,24 @@ router.post('/save/:reading', async function (req, res, next) {
     let result;
 
     try {
+        // get a connection 
         connection = await getConnection();
+        /*
+            use connection.execute() to run our
+            insert query. first argument is the SQL
+            statement and the values preceeded by a colon
+            are "bind" variables. 
+
+            the second argument passed to execute()
+            is the bind variables. the first key in that 
+            object is the reading value from the path
+            parameter and the second key is is the id 
+            returned by the insert statement.
+
+            third arg is options - in this case we 
+            tell the DB to auto commit our insert 
+            so we don't have to manually commit it
+        */
         result = await connection.execute(
             "insert into water (reading) values (:reading) return id into :id", 
             {
@@ -46,10 +63,13 @@ router.post('/save/:reading', async function (req, res, next) {
         );
     } 
     catch (err) {
+        // print out any errors
         console.error(err);
     } 
     finally {
+        // make sure the connection is closed 
         await closeConnection();
+        // return the result as JSON
         res.json(result);
     }
 });
