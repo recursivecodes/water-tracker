@@ -27,18 +27,33 @@ void setup() {
     Serial.print(".");
   }
 
+  // when connected, turn on the LED 
+  // so we know we're online
   if( WiFi.status() == WL_CONNECTED ) {
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, LOW);
   }
   
+  // print out the local IP 
+  // for debug purposes
   Serial.println("WiFi connected!");
   Serial.print("IP address: ");
   Serial.println(WiFi.localIP());
 
+  // tell the http client to
+  // reuse connections
   http.setReuse(true);
   
+  // set the pin mode on the sensor
+  // pin to use the internal pullup
+  // resistor so we don't have to 
+  // wire one in ourselves
   pinMode(D2, INPUT_PULLUP);
+  
+  // attach an interrupt to the data 
+  // pin. this will call the 'Flow' function
+  // each time it receives a signal from the
+  // sensor
   attachInterrupt(digitalPinToInterrupt(D2), Flow, FALLING);  
 }
 
