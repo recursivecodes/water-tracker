@@ -81,8 +81,8 @@ void loop() {
     lastMillis = millis();
     /*
      * flow rate is 330 pulses per liter
-     * convert to ml per pulse (1000/330) = 3.03
-     * multiply pulses by ml per pulse to get usage
+     * convert to mL per pulse (1000/330) = 3.03
+     * multiply pulses by mL per pulse to get usage
      */
     mLMeasured = (pulses * 3.03);
     totalmL += mLMeasured;
