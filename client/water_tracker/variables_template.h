@@ -3,5 +3,5 @@
 // source control!
 
 const char* ssid = "[YOUR SSID]";
-const char* password = "[YOUR PASSWORD]";
-String saveEndpoint = "http://[YOUR ENDPOINT]";
+const char* password = “[YOUR WIFI PASSWORD]";
+String saveEndpoint = "http://[YOUR VM IP]/save/";
